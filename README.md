@@ -29,40 +29,12 @@ ComptaFlow vise le **cabinet solo ou petit cabinet (1-5 collaborateurs)** avec u
 | **Backend / API** | Next.js API Routes (Route Handlers) | Monorepo, pas de serveur separe a gerer |
 | **Base de donnees** | PostgreSQL via Supabase | Tier gratuit genereux, auth integree, realtime |
 | **ORM** | Prisma | Migrations typees, excellent avec TypeScript |
-| **Auth** | Supabase Auth (ou NextAuth.js) | Social login, magic link, gestion des roles |
+| **Auth** | Supabase Auth | Social login, magic link, gestion des roles |
 | **Stockage fichiers** | Supabase Storage (S3-compatible) | Pieces comptables, documents clients |
 | **OCR** | Tesseract.js (MVP) -> API Mindee/Veryfi (prod) | Gratuit au debut, upgrade possible |
 | **Deploiement** | Vercel (frontend) + Supabase (backend) | Tiers gratuits, zero DevOps |
 | **Emails** | Resend | API simple, 3000 mails/mois gratuits |
 | **Paiements** | Stripe | Standard SaaS, Checkout + portail client |
-
-### Cout mensuel estime (lancement)
-
-- Vercel Hobby : **0 EUR**
-- Supabase Free : **0 EUR**
-- Resend Free : **0 EUR**
-- Domaine : **~10 EUR/an**
-- **Total : < 1 EUR/mois au demarrage**
-
-## Structure du projet
-
-```
-/
-├── src/
-│   ├── app/            # Pages Next.js (App Router)
-│   │   ├── (auth)/     # Pages login/register
-│   │   ├── (dashboard)/# Dashboard comptable
-│   │   ├── (client)/   # Portail client
-│   │   └── api/        # Route Handlers
-│   ├── components/     # Composants UI reutilisables
-│   ├── lib/            # Utilitaires, config Prisma, helpers
-│   └── types/          # Types TypeScript partages
-├── prisma/
-│   └── schema.prisma   # Schema de la base de donnees
-├── public/             # Assets statiques
-├── TASKS.md            # Roadmap et taches
-└── README.md
-```
 
 ## Demarrage rapide
 
@@ -79,6 +51,26 @@ npx prisma migrate dev
 
 # Lancer le serveur de dev
 npm run dev
+```
+
+## Structure du projet
+
+```
+src/
+├── app/
+│   ├── (auth)/           # Pages login / register
+│   ├── (dashboard)/      # Dashboard comptable (protege)
+│   ├── (client-portal)/  # Portail client
+│   └── api/              # Route Handlers
+├── components/
+│   └── ui/               # Composants shadcn/ui
+├── lib/
+│   ├── prisma.ts         # Client Prisma singleton
+│   ├── supabase/         # Clients Supabase (server + browser)
+│   └── utils.ts          # Utilitaires
+└── types/                # Types TypeScript partages
+prisma/
+└── schema.prisma         # Schema de la base de donnees
 ```
 
 ## Licence

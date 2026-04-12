@@ -1,0 +1,211 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================
+// UTILISATEURS & CABINET
+// ============================================
+
+enum UserRole {
+  OWNER       // Gerant du cabinet
+  COLLABORATOR // Collaborateur
+  CLIENT       // Client du cabinet (acces portail)
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      UserRole @default(CLIENT)
+  avatarUrl String?
+
+  cabinetId String?
+  cabinet   Cabinet? @relation(fields: [cabinetId], references: [id])
+
+  // Relations
+  documents   Document[]
+  messages    Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Cabinet {
+  id       String  @id @default(cuid())
+  name     String
+  siren    String? @unique
+  address  String?
+  phone    String?
+  email    String?
+
+  // Relations
+  users    User[]
+  clients  Client[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("cabinets")
+}
+
+// ============================================
+// CLIENTS DU CABINET
+// ============================================
+
+enum FormeJuridique {
+  EI
+  EIRL
+  EURL
+  SARL
+  SAS
+  SASU
+  SA
+  SNC
+  SCI
+  AUTO_ENTREPRENEUR
+  AUTRE
+}
+
+enum RegimeFiscal {
+  MICRO_BIC
+  MICRO_BNC
+  REEL_SIMPLIFIE
+  REEL_NORMAL
+  IS
+}
+
+model Client {
+  id              String          @id @default(cuid())
+  name            String
+  siren           String?         @unique
+  siret           String?
+  formeJuridique  FormeJuridique?
+  regimeFiscal    RegimeFiscal?
+  address         String?
+  phone           String?
+  email           String?
+  notes           String?
+
+  cabinetId String
+  cabinet   Cabinet @relation(fields: [cabinetId], references: [id], onDelete: Cascade)
+
+  // Relations
+  documents  Document[]
+  deadlines  Deadline[]
+  messages   Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("clients")
+}
+
+// ============================================
+// DOCUMENTS
+// ============================================
+
+enum DocumentType {
+  FACTURE_ACHAT
+  FACTURE_VENTE
+  RELEVE_BANCAIRE
+  JUSTIFICATIF
+  BULLETIN_PAIE
+  CONTRAT
+  AUTRE
+}
+
+enum DocumentStatus {
+  PENDING    // Depose, en attente de traitement
+  PROCESSING // En cours de traitement (OCR)
+  VALIDATED  // Valide par le comptable
+  REJECTED   // Rejete
+}
+
+model Document {
+  id       String         @id @default(cuid())
+  name     String
+  type     DocumentType   @default(AUTRE)
+  status   DocumentStatus @default(PENDING)
+  fileUrl  String
+  fileSize Int?
+  mimeType String?
+
+  // Donnees extraites par OCR
+  ocrData  Json?
+
+  clientId   String
+  client     Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  uploadedById String
+  uploadedBy   User   @relation(fields: [uploadedById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("documents")
+}
+
+// ============================================
+// ECHEANCES FISCALES / SOCIALES
+// ============================================
+
+enum DeadlineType {
+  TVA
+  IS
+  CFE
+  CVAE
+  CHARGES_SOCIALES
+  LIASSE_FISCALE
+  DECLARATION_REVENU
+  AUTRE
+}
+
+enum DeadlineStatus {
+  UPCOMING
+  DUE_SOON  // J-7
+  OVERDUE
+  COMPLETED
+}
+
+model Deadline {
+  id          String         @id @default(cuid())
+  title       String
+  description String?
+  type        DeadlineType
+  status      DeadlineStatus @default(UPCOMING)
+  dueDate     DateTime
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("deadlines")
+}
+
+// ============================================
+// MESSAGERIE
+// ============================================
+
+model Message {
+  id      String @id @default(cuid())
+  content String
+
+  senderId String
+  sender   User   @relation(fields: [senderId], references: [id])
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("messages")
+}
