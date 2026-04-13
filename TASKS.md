@@ -56,9 +56,8 @@
 - [x] Layout marketing avec navbar et footer
 - [x] Page parametres (profil, cabinet, abonnement, export)
 - [x] CGU, politique de confidentialite, mentions legales
-- [x] Vercel Analytics integre
-- [x] Vercel Cron pour les notifications automatiques
-- [ ] Deploiement production (Vercel + Supabase Pro si necessaire)
+- [x] Railway Cron pour les notifications automatiques
+- [ ] Deploiement production (Railway + Supabase Pro si necessaire)
 
 ## Backlog (futur)
 

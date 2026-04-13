@@ -32,7 +32,7 @@ ComptaFlow vise le **cabinet solo ou petit cabinet (1-5 collaborateurs)** avec u
 | **Auth** | Supabase Auth | Social login, magic link, gestion des roles |
 | **Stockage fichiers** | Supabase Storage (S3-compatible) | Pieces comptables, documents clients |
 | **OCR** | Tesseract.js (MVP) -> API Mindee/Veryfi (prod) | Gratuit au debut, upgrade possible |
-| **Deploiement** | Vercel (frontend) + Supabase (backend) | Tiers gratuits, zero DevOps |
+| **Deploiement** | Railway (app) + Supabase (backend) | Trial gratuit, zero DevOps |
 | **Emails** | Resend | API simple, 3000 mails/mois gratuits |
 | **Paiements** | Stripe | Standard SaaS, Checkout + portail client |
 

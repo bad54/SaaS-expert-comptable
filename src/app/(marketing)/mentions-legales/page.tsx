@@ -26,7 +26,7 @@ export default function MentionsLegalesPage() {
         <section>
           <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">3. Hebergement</h2>
           <p className="mt-2">
-            <strong>Frontend :</strong> Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA<br />
+            <strong>Application :</strong> Railway Corp., San Francisco, CA, USA<br />
             <strong>Backend &amp; Base de donnees :</strong> Supabase Inc.<br />
             <strong>Stockage de fichiers :</strong> Supabase Storage (AWS S3-compatible)
           </p>

@@ -4,7 +4,7 @@ import { sendDeadlineReminder, sendDocumentDepositNotification } from "@/lib/ema
 import { DEADLINE_TYPE_LABELS } from "@/types";
 
 // POST /api/notifications - Process and send pending notifications
-// This would typically be called by a cron job (Vercel Cron)
+// Called by Railway Cron Service (daily at 7h UTC)
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const { type } = body;

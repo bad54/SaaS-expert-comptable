@@ -58,7 +58,7 @@ export default function ConfidentialitePage() {
           <p className="mt-2">Nous utilisons les sous-traitants suivants :</p>
           <ul className="mt-2 list-disc pl-6 space-y-1">
             <li><strong>Supabase</strong> (hebergement, base de donnees) - UE</li>
-            <li><strong>Vercel</strong> (hebergement frontend) - UE/US</li>
+            <li><strong>Railway</strong> (hebergement application) - US</li>
             <li><strong>Stripe</strong> (paiements) - UE/US</li>
             <li><strong>Resend</strong> (emails transactionnels) - US</li>
           </ul>
