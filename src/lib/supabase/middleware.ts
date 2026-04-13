@@ -42,7 +42,11 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith("/portal") &&
     !request.nextUrl.pathname.startsWith("/landing") &&
     !request.nextUrl.pathname.startsWith("/pricing") &&
-    !request.nextUrl.pathname.startsWith("/api/stripe")
+    !request.nextUrl.pathname.startsWith("/cgu") &&
+    !request.nextUrl.pathname.startsWith("/confidentialite") &&
+    !request.nextUrl.pathname.startsWith("/mentions-legales") &&
+    !request.nextUrl.pathname.startsWith("/api/stripe") &&
+    !request.nextUrl.pathname.startsWith("/api/notifications")
   ) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";

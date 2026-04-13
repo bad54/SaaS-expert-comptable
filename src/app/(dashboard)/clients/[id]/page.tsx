@@ -17,6 +17,8 @@ import {
   FileText,
   Calendar,
   Upload,
+  Send,
+  CalendarPlus,
 } from "lucide-react";
 import {
   FORME_JURIDIQUE_LABELS,
@@ -69,6 +71,9 @@ export default function ClientDetailPage() {
   const [tab, setTab] = useState<"info" | "documents" | "deadlines">("info");
   const [showUpload, setShowUpload] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [generatingDeadlines, setGeneratingDeadlines] = useState(false);
+  const [inviting, setInviting] = useState(false);
+  const [inviteMessage, setInviteMessage] = useState<string | null>(null);
 
   const fetchClient = useCallback(async () => {
     try {
@@ -95,6 +100,51 @@ export default function ClientDetailPage() {
       router.push("/clients");
     } catch {
       setDeleting(false);
+    }
+  }
+
+  async function handleGenerateDeadlines() {
+    if (!confirm("Generer automatiquement les echeances fiscales pour cette annee ?")) return;
+    setGeneratingDeadlines(true);
+    try {
+      const res = await fetch(`/api/clients/${clientId}/generate-deadlines`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ year: new Date().getFullYear() }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert(data.message);
+        fetchClient();
+      } else {
+        alert(data.error);
+      }
+    } catch {
+      alert("Erreur lors de la generation");
+    } finally {
+      setGeneratingDeadlines(false);
+    }
+  }
+
+  async function handleInvite() {
+    if (!client?.email) {
+      alert("Ce client n'a pas d'email. Modifiez sa fiche d'abord.");
+      return;
+    }
+    setInviting(true);
+    setInviteMessage(null);
+    try {
+      const res = await fetch("/api/invitations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ clientId, email: client.email }),
+      });
+      const data = await res.json();
+      setInviteMessage(res.ok ? data.message : data.error);
+    } catch {
+      setInviteMessage("Erreur d'envoi");
+    } finally {
+      setInviting(false);
     }
   }
 
@@ -148,6 +198,26 @@ export default function ClientDetailPage() {
           </div>
         </div>
         <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleInvite}
+            disabled={inviting}
+            title="Inviter au portail client"
+          >
+            <Send className="mr-2 h-4 w-4" />
+            {inviting ? "Envoi..." : "Inviter"}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleGenerateDeadlines}
+            disabled={generatingDeadlines}
+            title="Generer les echeances selon le regime fiscal"
+          >
+            <CalendarPlus className="mr-2 h-4 w-4" />
+            {generatingDeadlines ? "Generation..." : "Echeances auto"}
+          </Button>
           <Link href={`/clients/${client.id}/edit`}>
             <Button variant="outline" size="sm">
               <Pencil className="mr-2 h-4 w-4" />
@@ -182,6 +252,13 @@ export default function ClientDetailPage() {
           </button>
         ))}
       </div>
+
+      {/* Invite message */}
+      {inviteMessage && (
+        <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+          {inviteMessage}
+        </div>
+      )}
 
       {/* Tab content */}
       {tab === "info" && (

@@ -44,9 +44,9 @@ export default function MarketingLayout({
               ComptaFlow - Simplifie la vie des experts-comptables
             </p>
             <div className="flex gap-4 text-sm text-zinc-500">
-              <span>CGU</span>
-              <span>Confidentialite</span>
-              <span>Mentions legales</span>
+              <Link href="/cgu" className="hover:text-zinc-900 dark:hover:text-zinc-50">CGU</Link>
+              <Link href="/confidentialite" className="hover:text-zinc-900 dark:hover:text-zinc-50">Confidentialite</Link>
+              <Link href="/mentions-legales" className="hover:text-zinc-900 dark:hover:text-zinc-50">Mentions legales</Link>
             </div>
           </div>
         </div>
