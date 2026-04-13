@@ -45,3 +45,28 @@ export const DOCUMENT_STATUS_COLORS: Record<string, string> = {
   VALIDATED: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
   REJECTED: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
 };
+
+export const DEADLINE_TYPE_LABELS: Record<string, string> = {
+  TVA: "TVA",
+  IS: "Impot sur les societes",
+  CFE: "CFE",
+  CVAE: "CVAE",
+  CHARGES_SOCIALES: "Charges sociales",
+  LIASSE_FISCALE: "Liasse fiscale",
+  DECLARATION_REVENU: "Declaration de revenu",
+  AUTRE: "Autre",
+};
+
+export const DEADLINE_STATUS_LABELS: Record<string, string> = {
+  UPCOMING: "A venir",
+  DUE_SOON: "Bientot",
+  OVERDUE: "En retard",
+  COMPLETED: "Termine",
+};
+
+export const DEADLINE_STATUS_COLORS: Record<string, string> = {
+  UPCOMING: "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200",
+  DUE_SOON: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200",
+  OVERDUE: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+  COMPLETED: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+};
